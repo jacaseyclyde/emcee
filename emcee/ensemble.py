@@ -294,9 +294,12 @@ class EnsembleSampler(object):
 
         # Inject the progress bar
         total = iterations * yield_step
-        with get_progress_bar(progress, total) as pbar:
+        try:
+            i = self.get_chain().shape[0]
+        except AttributeError:
             i = 0
-            for _ in range(iterations):
+        with get_progress_bar(progress, total, i) as pbar:
+            for _ in range(iterations - i):
                 for _ in range(yield_step):
                     # Choose a random move
                     move = self._random.choice(self._moves, p=self._weights)

@@ -27,7 +27,7 @@ class _NoOpPBar(object):
         pass
 
 
-def get_progress_bar(display, total):
+def get_progress_bar(display, total, initial=0):
     """Get a progress bar interface with given properties
 
     If the tqdm library is not installed, this will always return a "progress
@@ -46,9 +46,10 @@ def get_progress_bar(display, total):
             return _NoOpPBar()
         else:
             if display is True:
-                return tqdm.tqdm(total=total)
+                return tqdm.tqdm(total=total, initial=initial)
             else:
-                return getattr(tqdm, 'tqdm_' + display)(total=total)
+                return getattr(tqdm, 'tqdm_' + display)(total=total,
+                                                        initial=initial)
 
     return _NoOpPBar()
 
